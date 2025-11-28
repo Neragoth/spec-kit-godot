@@ -948,6 +948,7 @@ def init(
     skip_tls: bool = typer.Option(False, "--skip-tls", help="Skip SSL/TLS verification (not recommended)"),
     debug: bool = typer.Option(False, "--debug", help="Show verbose diagnostic output for network and extraction failures"),
     github_token: str = typer.Option(None, "--github-token", help="GitHub token to use for API requests (or set GH_TOKEN or GITHUB_TOKEN environment variable)"),
+    godot: bool = typer.Option(False, "--godot", help="Initialize with Godot game development templates"),
 ):
     """
     Initialize a new Specify project from the latest template.
@@ -1102,6 +1103,7 @@ def init(
         ("zip-list", "Archive contents"),
         ("extracted-summary", "Extraction summary"),
         ("chmod", "Ensure scripts executable"),
+        ("godot", "Apply Godot templates"),
         ("cleanup", "Cleanup"),
         ("git", "Initialize git repository"),
         ("final", "Finalize")
@@ -1121,6 +1123,27 @@ def init(
             download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
 
             ensure_executable_scripts(project_path, tracker=tracker)
+
+            if godot:
+                tracker.start("godot")
+                try:
+                    # Try to find templates in package first, then source repo structure
+                    templates_dir = Path(__file__).parent / "templates" / "godot"
+                    if not templates_dir.exists():
+                        templates_dir = Path(__file__).parent.parent.parent / "templates" / "godot"
+                    
+                    if templates_dir.exists():
+                        target_dir = project_path / ".specify" / "templates"
+                        target_dir.mkdir(parents=True, exist_ok=True)
+                        for item in templates_dir.glob("*.md"):
+                            shutil.copy2(item, target_dir / item.name)
+                        tracker.complete("godot", "applied")
+                    else:
+                        tracker.error("godot", "templates not found")
+                except Exception as e:
+                    tracker.error("godot", f"failed: {e}")
+            else:
+                tracker.skip("godot", "not requested")
 
             if not no_git:
                 tracker.start("git")
