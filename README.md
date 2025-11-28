@@ -139,24 +139,52 @@ Pour des instructions détaillées étape par étape, voir notre [guide complet]
 
 ## 🎮 Support Godot
 
-Spec Kit supporte désormais le développement de jeux avec **Godot 4.5** !
+Spec Kit supporte désormais le développement de jeux avec **Godot 4.5.1** avec une architecture professionnelle de niveau AAA!
 
-Pour initialiser un projet Godot avec une architecture propre et orientée données :
+Pour initialiser un projet Godot avec une architecture data-driven stricte :
 
 ```bash
 specify init mon-jeu-godot --godot
 ```
 
-Cette commande configure automatiquement votre projet avec des modèles spécialisés pour le développement de jeux :
+Cette commande configure automatiquement votre projet avec des templates avancés spécialisés pour le développement de jeux :
 
-*   **Spécifications de Jeu (GDD)** : Modèles pour scénarios de gameplay, mécaniques de base et assets.
-*   **Plans d'Implémentation Godot** : Structure de scènes, Ressources (Data), et Signaux.
-*   **Workflow de Tâches** : Données -> Visuels -> Logique -> Vérification.
+### 📋 Templates de Spécification
 
-L'architecture promue est :
-*   **Orientée Données** : Utilisation intensive des `Resource` pour la configuration.
-*   **Composition** : Utilisation de Composants (Noeuds) pour les comportements.
-*   **Découplage** : Communication via Signaux.
+*   **Spécifications de Jeu (GDD)** : Scénarios de gameplay testables, mécaniques data-driven, métriques de performance
+*   **Plans d'Implémentation Godot** : Architecture complète avec classes abstraites, Resources, Components, State Machines, Services
+*   **Workflow de Tâches** : 7 phases détaillées (Core → Data → Visuals → Components → States → Logic → Tests → Polish)
+
+### 💻 Templates de Code GDScript
+
+*   **Classes Abstraites** : Utilise `@abstract` (Godot 4.5.1) pour contrats stricts
+*   **Resources** : Template data-driven avec validation `_validate_property()`
+*   **Components** : Pattern composition avec responsabilité unique
+*   **States** : Pour State Machines (enter/exit/update/physics_update)
+*   **Services** : Singletons/Service Locator pour systèmes globaux
+
+Tous les templates incluent :
+*   Organisation avec `#region` (Godot 4.5.1)
+*   Commentaires et DocStrings en **français**
+*   Standards de code stricts (nommage, anti-patterns)
+*   Checklist de conformité qualité
+
+### 🏗️ Architecture Professionnelle
+
+L'architecture promue suit les standards de l'industrie du jeu vidéo :
+
+*   **100% Data-Driven** : Toutes les données configurables dans des Resources (.tres), zéro hard-coding
+*   **Composition Over Inheritance** : Components réutilisables, hiérarchies plates
+*   **Design Patterns** : Component, State Machine, Observer (EventBus), Service Locator, Object Pooling
+*   **Découplage Fort** : Communication via Signaux et Services
+*   **Testabilité** : Tests GUT, injection de dépendances
+
+### 📚 Documentation Incluse
+
+*   **Coding Standards** : Conventions strictes (nommage, `#region`, commentaires français)
+*   **Architecture Guide** : Structure projet, patterns, flux de données, optimisations
+
+Consultez les guides dans `templates/godot/` pour des exemples complets et les meilleures pratiques.
 
 ## 📽️ Aperçu Vidéo
 
